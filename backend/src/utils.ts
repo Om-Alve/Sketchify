@@ -20,11 +20,11 @@ Create a diagrammatic representation of a given text using Mermaid syntax to fac
 [
   {
     "title": "<concise title 1>",
-    "mermaid": "<mermaid diagram 1>"
+    "mermaid": \'<mermaid diagram 1>\'
   },
   {
     "title": "<concise title 2>",
-    "mermaid": "<mermaid diagram 2>"
+    "mermaid": \'<mermaid diagram 2>\'
   }
 ]
 
@@ -39,7 +39,7 @@ Create a diagrammatic representation of a given text using Mermaid syntax to fac
 [
   {
     "title": "Basic Process Flow",
-    "mermaid": "graph TD;\n    A[Input] --> B[Process] --> C[Output]"
+    "mermaid": \`graph TD;\n    A[Input] --> B[Process] --> C[Output]\`
   }
 ]
 \`\`\`
@@ -53,7 +53,7 @@ Create a diagrammatic representation of a given text using Mermaid syntax to fac
 [
   {
     "title": "Approval and Implementation Process",
-    "mermaid": "graph LR;\n    A[Manager Approval] --> B[Budget Implementation] --> C[Team Execution]"
+    "mermaid": \`graph LR;\n    A[Manager Approval] --> B[Budget Implementation] --> C[Team Execution]\`
   }
 ]
 \`\`\`

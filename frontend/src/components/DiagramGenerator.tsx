@@ -235,7 +235,12 @@ const DiagramGenerator = () => {
     setActiveExample(index);
     await handleGenerate(example.text);
   };
-
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleGenerate();
+    }
+  };
   useEffect(() => {
     if (selectedDiagram) {
       setTimeout(() => {
@@ -280,6 +285,7 @@ const DiagramGenerator = () => {
               className="w-full min-h-[160px] p-4 rounded-lg bg-white border-2 border-gray-300 text-gray-800 focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none placeholder-gray-400 font-sans"
               value={text}
               onChange={(e) => setText(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
             <button
               onClick={() => handleGenerate()}

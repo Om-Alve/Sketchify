@@ -19,7 +19,6 @@ app.use(cors());
 
 app.post("/", async (c) => {
   const query = await c.req.json();
-  console.log(query);
   const { success, data } = queryInputSchema.safeParse(query);
 
   if (!success) {

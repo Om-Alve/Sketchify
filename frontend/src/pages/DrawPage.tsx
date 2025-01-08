@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Star } from 'lucide-react';
 import DiagramGenerator from '../components/DiagramGenerator';
 
 const DrawPage = () => {
@@ -15,9 +15,16 @@ const DrawPage = () => {
             Back to Home
           </Link>
           <h1 className="font-hand text-xl text-gray-900">Sketchify</h1>
+          <a
+            href="https://github.com/Om-Alve/Sketchify"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-2 bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-900 hover:to-black text-white px-4 py-2 rounded-full transition-all duration-300"
+          >
+            <Star className="w-4 h-4 transition-transform group-hover:scale-110" />
+          </a>
         </div>
       </nav>
-
       <DiagramGenerator />
     </div>
   );

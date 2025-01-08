@@ -6,7 +6,6 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
-    "groq-sdk": "^0.9.1",
     "hono": "^4.6.16"
   },
   "devDependencies": {

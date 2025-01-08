@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import mermaid from 'mermaid';
 import axios from 'axios';
-import { Sun, Loader2, Sparkles } from 'lucide-react';
+import { Loader2, Sparkles } from 'lucide-react';
 import { DiagramErrors, CachedExamples, DiagramExample, Diagram } from '../types.ts'
 import { DiagramModal } from './DiagramModal.tsx';
 import { DiagramDisplay } from './DiagramDisplay.tsx';
@@ -204,8 +204,8 @@ const DiagramGenerator = () => {
                   key={index}
                   onClick={() => handleExampleClick(example, index)}
                   className={`p-3 text-left rounded-lg transition-all text-sm ${activeExample === index
-                      ? 'bg-blue-50 dark:bg-blue-900 border-2 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-200'
-                      : 'hover:bg-gray-50 dark:hover:bg-gray-700 border-2 border-gray-100 dark:border-gray-700'
+                    ? 'bg-blue-50 dark:bg-blue-900 border-2 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-200'
+                    : 'hover:bg-gray-50 dark:hover:bg-gray-700 border-2 border-gray-100 dark:border-gray-700'
                     }`}
                 >
                   <div className="font-medium mb-1">{example.title}</div>

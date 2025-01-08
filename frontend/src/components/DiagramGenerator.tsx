@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import mermaid from 'mermaid';
 import axios from 'axios';
-import { X, Loader2, AlertCircle, Sparkles } from 'lucide-react';
-import { DiagramErrors, CachedExamples, DiagramDisplayProps, DiagramModalProps, DiagramExample, Diagram } from '../types.ts'
+import { Loader2, Sparkles } from 'lucide-react';
+import { DiagramErrors, CachedExamples, DiagramExample, Diagram } from '../types.ts'
+import { DiagramModal } from './DiagramModal.tsx';
+import { DiagramDisplay } from './DiagramDisplay.tsx';
 
 const CACHED_EXAMPLES: CachedExamples = {
   "Simple Flowchart": [
@@ -65,72 +67,6 @@ const EXAMPLES: DiagramExample[] = [
     text: "Make a state diagram for a traffic light system showing the transitions between Red, Yellow, and Green states with appropriate timing"
   }
 ];
-
-const DiagramDisplay: React.FC<DiagramDisplayProps> = ({ diagram, index, hasError, onClick }) => {
-  return (
-    <div
-      onClick={() => !hasError && onClick()}
-      className={`diagram-display bg-white rounded-lg p-4 ${!hasError ? 'cursor-pointer hover:shadow-lg' : ''} transition-all border-2 border-gray-200`}
-    >
-      <div className="flex justify-between items-center mb-3">
-        <h3 className="text-sm font-medium text-gray-600 font-hand">
-          {diagram.title}
-        </h3>
-      </div>
-      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-        {hasError ? (
-          <div className="flex items-center justify-center gap-2 text-red-500 p-4">
-            <AlertCircle className="w-5 h-5" />
-            <span>Unable to render diagram due to syntax error</span>
-          </div>
-        ) : (
-          <div className="diagram-container w-full flex justify-center">
-            <div className="mermaid w-full" key={`diagram-${index}-${diagram.mermaid}`}>
-              {diagram.mermaid}
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-const DiagramModal: React.FC<DiagramModalProps> = ({ diagram, onClose }) => {
-  useEffect(() => {
-    const modalContainer = document.querySelector('.diagram-modal .mermaid');
-    if (modalContainer) {
-      const svg = modalContainer.querySelector('svg');
-      if (svg) {
-        svg.style.minWidth = '600px';
-        svg.style.width = 'auto';
-        svg.style.maxWidth = '100%';
-        svg.style.maxHeight = '70vh';
-      }
-    }
-  }, [diagram]);
-
-  return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg shadow-2xl w-[90vw] max-w-6xl flex flex-col">
-        <div className="p-3 border-b-2 border-gray-100 flex justify-between items-center flex-shrink-0">
-          <h3 className="text-sm font-medium text-gray-600 font-hand">
-            {diagram.title}
-          </h3>
-          <button onClick={onClose} className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors">
-            <X className="w-4 h-4" />
-          </button>
-        </div>
-        <div className="diagram-modal bg-gray-50 flex-1 p-8 overflow-auto">
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="mermaid w-full" key={`modal-${diagram.mermaid}`}>
-              {diagram.mermaid}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const DiagramGenerator = () => {
   const [text, setText] = useState<string>('');

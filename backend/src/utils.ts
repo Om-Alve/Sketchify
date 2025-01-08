@@ -133,7 +133,7 @@ function validateDiagrams(diagrams: any[]): boolean {
     }
 
     const sanitizedSyntax = sanitizeMermaidSyntax(diagram.mermaid).replace(
-      /(\[?\w+[\w\s()[\]{}]*?\]?)\s*-->\s*(\w+)\s+(\[?\w+[\w\s()[\]{}]*?\]?)/g,
+      /(\[?\w+[\w\s()[\]{}]*?\]?)\s*-->\s*([\w\s\/]+)\s+(\[?\w+[\w\s()[\]{}]*?\]?)/g,
       "$1 -->|$2| $3",
     );
     const isValid = validateMermaidSyntax(sanitizedSyntax);

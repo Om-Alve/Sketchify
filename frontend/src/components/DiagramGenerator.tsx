@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import mermaid from 'mermaid';
 import axios from 'axios';
-import { Loader2, Sparkles } from 'lucide-react';
+import { Sun, Loader2, Sparkles } from 'lucide-react';
 import { DiagramErrors, CachedExamples, DiagramExample, Diagram } from '../types.ts'
 import { DiagramModal } from './DiagramModal.tsx';
 import { DiagramDisplay } from './DiagramDisplay.tsx';
@@ -186,15 +186,15 @@ const DiagramGenerator = () => {
   }, [selectedDiagram]);
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <div className="container mx-auto p-4 max-w-5xl">
-        <div className="bg-white rounded-lg p-6 mb-8 border-2 border-gray-200 shadow-md">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6 font-hand">
+        <div className="rounded-lg p-6 mb-8 border-2 shadow-md bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+          <h1 className="text-3xl font-bold mb-6 font-hand">
             Sketchify
           </h1>
 
           <div className="mb-6">
-            <h2 className="text-sm font-medium text-gray-600 mb-3 flex items-center gap-2">
+            <h2 className="text-sm font-medium mb-3 flex items-center gap-2 text-gray-600 dark:text-gray-300">
               <Sparkles className="w-4 h-4" />
               Try these examples:
             </h2>
@@ -204,12 +204,14 @@ const DiagramGenerator = () => {
                   key={index}
                   onClick={() => handleExampleClick(example, index)}
                   className={`p-3 text-left rounded-lg transition-all text-sm ${activeExample === index
-                    ? 'bg-blue-50 border-2 border-blue-200 text-blue-700'
-                    : 'hover:bg-gray-50 border-2 border-gray-100'
+                      ? 'bg-blue-50 dark:bg-blue-900 border-2 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-200'
+                      : 'hover:bg-gray-50 dark:hover:bg-gray-700 border-2 border-gray-100 dark:border-gray-700'
                     }`}
                 >
                   <div className="font-medium mb-1">{example.title}</div>
-                  <div className="text-gray-600 line-clamp-2">{example.text}</div>
+                  <div className="text-gray-600 dark:text-gray-300">
+                    {example.text}
+                  </div>
                 </button>
               ))}
             </div>
@@ -218,7 +220,9 @@ const DiagramGenerator = () => {
           <div className="space-y-4">
             <textarea
               placeholder="Type something to generate hand-drawn diagrams..."
-              className="w-full min-h-[160px] p-4 rounded-lg bg-white border-2 border-gray-300 text-gray-800 focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none placeholder-gray-400 font-sans"
+              className="w-full min-h-[160px] p-4 rounded-lg border-2 focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none font-sans
+                bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 
+                text-gray-800 dark:text-gray-100 placeholder-gray-400"
               value={text}
               onChange={(e) => setText(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -226,7 +230,9 @@ const DiagramGenerator = () => {
             <button
               onClick={() => handleGenerate()}
               disabled={!text.trim() || isLoading}
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-all disabled:opacity-50 shadow-md"
+              className="w-full bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 
+                text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center gap-2 
+                transition-all disabled:opacity-50 shadow-md"
             >
               {isLoading ? (
                 <>

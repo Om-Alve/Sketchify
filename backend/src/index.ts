@@ -11,7 +11,7 @@ const queryInputSchema = zod.object({
 
 const app = new Hono<{
   Bindings: {
-    GROQ_API_KEY: string;
+    GOOGLE_API_KEY: string;
   };
 }>().basePath("api/v1/");
 
@@ -27,9 +27,7 @@ app.post("/", async (c) => {
     });
   }
 
-  const genAI = new GoogleGenerativeAI(
-    "AIzaSyCDiikf5hI17vKD0M9j06H5g6FxRcBzVVA",
-  );
+  const genAI = new GoogleGenerativeAI(c.env.GOOGLE_API_KEY);
 
   const regex = await getDiagrams(genAI, data.query);
 

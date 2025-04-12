@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { serve } from "@hono/node-server";
 import { getDiagrams } from "./utils";
 import zod from "zod";
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -34,4 +35,10 @@ app.post("/", async (c) => {
   return c.json(regex);
 });
 
-export default app;
+const port = process.env.PORT || 8000;
+console.log(`Server is running on port ${port}`);
+
+serve({
+  fetch: app.fetch,
+  port,
+});

@@ -1,15 +1,17 @@
 {
   "name": "backend",
   "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy --minify"
+    "start": "tsx src/index.ts",
+    "dev": "tsx watch src/index.ts"
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
+    "@hono/node-server": "^1.14.0",
     "hono": "^4.6.16"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241218.0",
-    "wrangler": "^3.96.0"
+    "wrangler": "^4.7.2",
+    "tsx": "^4.7.1"
   }
 }

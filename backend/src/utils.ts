@@ -43,7 +43,7 @@ Create a diagrammatic representation of a given text using Mermaid syntax to fac
 ]
 \`\`\`
 
-**Example 2 Wrap text on arrows using |<text>| (IMPORTANT!!!!)**
+**Example 2 ALWAYS PIPE text on arrows using |<text>| (IMPORTANT!!!!)**
 
 Given Text: "Orders get validated, then payments are processed with a success or failure outcome"
 
@@ -61,11 +61,10 @@ Mermaid Output:
 # Notes
 
 - Instead of a single big diagram, break the concept down into 2-3 smaller indivisible and complete diagrams and then output multiple in a list. IMPORTANT
-- Consider the clarity and simplicity of the diagram to ensure it's easy to revise later.
 - Do not add any extra styling, keep it simple. Just focus on making accurate diagrams and outputting valid mermaid.
 - Think about alternative ways of representing complex relationships to maintain simplicity.
 - Remember to choose the most effective type of diagram based on the structure and content of the provided text.
-- ALWAYS GIVE VALID MERMAID SYNTAX WITHOUT ANY MISTAKES
+- ALWAYS GIVE VALID MERMAID SYNTAX WITHOUT ANY MISTAKES (MANDATORY)
 `;
 
 function validateMermaidSyntax(syntax: string): boolean {
@@ -132,10 +131,13 @@ function validateDiagrams(diagrams: any[]): boolean {
       return false;
     }
 
-    const sanitizedSyntax = sanitizeMermaidSyntax(diagram.mermaid).replace(
-      /(\[?\w+[\w\s()[\]{}]*?\]?)\s*-->\s*([\w\s\/]+)\s+(\[?\w+[\w\s()[\]{}]*?\]?)/g,
-      "$1 -->|$2| $3",
-    );
+    const sanitizedSyntax = sanitizeMermaidSyntax(diagram.mermaid)
+      .replace(
+        /(\[?\w+[\w\s()[\]{}]*?\]?)\s*-->\s*([\w\s\/]+)\s+(\[?\w+[\w\s()[\]{}]*?\]?)/g,
+        "$1 -->|$2| $3",
+      )
+      .replace(/(\b\w+)\[([^\]]*?\([^)]+?\)[^\]]*?)\]/g, '$1["$2"]');
+
     const isValid = validateMermaidSyntax(sanitizedSyntax);
 
     if (!isValid) {
@@ -150,32 +152,28 @@ function validateDiagrams(diagrams: any[]): boolean {
 }
 
 function sanitizeMermaidSyntax(syntax: string): string {
-  if (!syntax || typeof syntax !== "string") {
-    console.error("Invalid input: syntax must be a non-empty string");
-    return "";
-  }
+  if (!syntax || typeof syntax !== "string") return "";
+
+  // Enhanced regex with explicit node boundary detection
+  const arrowTextRegex =
+    /(\[.*?\]|\(.*?\)|\w+)\s*(-->|==>|--->|-\.->)\s*([^|\n\[\]()]+?)\s*(\[.*?\]|\(.*?\)|\w+|$)/g;
 
   let sanitized = syntax
-    .replace(/[^\w\s\->,()[\]{}:;="'#./]+/g, "")
-    .replace(/javascript:/gi, "")
-    .replace(/<script/gi, "")
-    .trim();
+    .replace(arrowTextRegex, "$1 $2|$3|$4")
+    .replace(/->\s*\|/g, "-->|") // Normalize arrow types
+    .replace(/(\w)(--+>)/g, "$1 $2"); // Ensure space between nodes and arrows
 
-  sanitized = sanitized.replace(/(\w)(-->|---|==>|-.->)(\w)/g, "$1 $2 $3");
-
-  const lines = sanitized.split("\n");
-  const validatedLines = lines.map((line) => {
-    line = line.replace(/--+>/g, "-->");
-    line = line.replace(/==+>/g, "==>");
-    line = line.replace(/-\.+->/g, "-.->");
-
-    line = line.replace(/\[([^\]]+)\]/g, "[$1]");
-    line = line.replace(/\(([^)]+)\)/g, "($1)");
-
-    return line;
-  });
-
-  return validatedLines.join("\n");
+  // Post-processing cleanup
+  return sanitized
+    .split("\n")
+    .map((line) => {
+      // Remove any remaining loose text after arrows
+      if (line.includes("-->") && line.includes("|") === false) {
+        return line.replace(/(-->)(\s*)([^[\n(]+?)(\s*)([\[(])/, "$1|$3|$5");
+      }
+      return line;
+    })
+    .join("\n");
 }
 
 export async function getDiagrams(
@@ -190,6 +188,7 @@ export async function getDiagrams(
       const model = genAI.getGenerativeModel({
         model: "gemini-2.0-flash-exp",
         systemInstruction: SystemPrompt,
+        temperature: 0.5,
       });
 
       const result = await model.generateContent(`Text: ${query}`);
